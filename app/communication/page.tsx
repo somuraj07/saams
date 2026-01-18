@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import io from "socket.io-client";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, Send, CheckCircle2, XCircle, Clock, User, Calendar, FileText, ArrowRight } from "lucide-react";
+import { MessageCircle, Send, CheckCircle2, XCircle, Clock, User, Calendar, FileText, ArrowRight, Menu, X, ArrowLeft } from "lucide-react";
 
 type AppointmentStatus = "PENDING" | "APPROVED" | "REJECTED" | "COMPLETED";
 
@@ -41,6 +41,7 @@ export default function CommunicationPage() {
   const [selectedTeacherId, setSelectedTeacherId] = useState("");
   const [note, setNote] = useState("");
   const [saving, setSaving] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const socketRef = useRef<any>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -200,18 +201,45 @@ export default function CommunicationPage() {
 
   /* ================= UI ================= */
   return (
-    <div className="h-screen flex bg-gradient-to-br from-[#1a1a1a] via-[#2d2d2d] to-[#1a1a1a]">
+    <div className="h-screen flex bg-gradient-to-br from-[#1a1a1a] via-[#2d2d2d] to-[#1a1a1a] relative">
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="md:hidden fixed top-4 left-4 z-50 p-2.5 bg-[#1a1a1a] border border-[#333333] rounded-lg text-white hover:bg-[#2d2d2d] transition shadow-lg"
+      >
+        {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      {/* Mobile Overlay */}
+      {sidebarOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/60 z-40"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* SIDEBAR */}
-      <div className="w-[360px] bg-[#1a1a1a] border-r border-[#333333] flex flex-col">
-        <div className="px-4 py-4 border-b border-[#333333] bg-gradient-to-r from-[#2d2d2d] to-[#1a1a1a]">
+      <div className={`
+        fixed md:static inset-y-0 left-0 z-40
+        w-[320px] md:w-[360px] bg-[#1a1a1a] border-r border-[#333333] flex flex-col
+        transform transition-transform duration-300 ease-in-out
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}>
+        <div className="px-4 py-4 border-b border-[#333333] bg-gradient-to-r from-[#2d2d2d] to-[#1a1a1a] flex items-center justify-between">
           <h2 className="text-lg font-semibold text-white flex items-center gap-2">
             <MessageCircle className="w-5 h-5 text-[#808080]" />
             Appointments
           </h2>
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="md:hidden p-1.5 text-[#808080] hover:text-white hover:bg-[#2d2d2d] rounded transition"
+          >
+            <X size={20} />
+          </button>
         </div>
 
         {role === "STUDENT" && (
-          <div className="p-4 space-y-3 border-b border-[#333333] bg-[#2d2d2d]/50">
+          <div className="p-3 md:p-4 space-y-3 border-b border-[#333333] bg-[#2d2d2d]/50">
             <select
               value={selectedTeacherId}
               onChange={(e) => setSelectedTeacherId(e.target.value)}
@@ -255,7 +283,7 @@ export default function CommunicationPage() {
           </div>
         )}
 
-        <div className="flex-1 overflow-y-auto p-3 space-y-2">
+        <div className="flex-1 overflow-y-auto p-2 md:p-3 space-y-2">
           {appointments.map((a, index) => (
             <motion.button
               key={a.id}
@@ -263,8 +291,11 @@ export default function CommunicationPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.05 }}
               whileHover={{ scale: 1.02, x: 4 }}
-              onClick={() => setSelected(a)}
-              className={`w-full text-left px-4 py-3 rounded-lg transition ${
+              onClick={() => {
+                setSelected(a);
+                setSidebarOpen(false); // Close sidebar on mobile when appointment is selected
+              }}
+              className={`w-full text-left px-3 md:px-4 py-3 rounded-lg transition ${
                 selected?.id === a.id
                   ? "bg-[#404040] border border-[#808080] shadow-lg"
                   : "bg-[#2d2d2d]/50 border border-[#333333] hover:bg-[#404040]/50 hover:border-[#404040]"
@@ -305,13 +336,22 @@ export default function CommunicationPage() {
       </div>
 
       {/* CHAT */}
-      <div className="flex-1 flex flex-col bg-[#1a1a1a]">
+      <div className="flex-1 flex flex-col bg-[#1a1a1a] pt-14 md:pt-0">
         {selected ? (
           <>
-            <div className="h-16 bg-gradient-to-r from-[#2d2d2d] to-[#1a1a1a] border-b border-[#333333] px-6 flex items-center font-medium text-white shadow-lg">
+            <div className="h-14 md:h-16 bg-gradient-to-r from-[#2d2d2d] to-[#1a1a1a] border-b border-[#333333] px-4 md:px-6 flex items-center font-medium text-white shadow-lg">
+              <button
+                onClick={() => {
+                  setSelected(null);
+                  setSidebarOpen(true);
+                }}
+                className="md:hidden mr-3 p-1.5 text-[#808080] hover:text-white hover:bg-[#2d2d2d] rounded transition"
+              >
+                <ArrowLeft size={20} />
+              </button>
               <MessageCircle className="w-5 h-5 text-[#808080] mr-3" />
-              Appointment #{selected.id.slice(0, 6)}
-              <span className={`ml-4 px-3 py-1 rounded-full text-xs font-medium ${
+              <span className="text-sm md:text-base truncate">Appointment #{selected.id.slice(0, 6)}</span>
+              <span className={`ml-2 md:ml-4 px-2 md:px-3 py-1 rounded-full text-xs font-medium shrink-0 ${
                 selected.status === "APPROVED" ? "bg-green-500/20 text-green-400 border border-green-500/30" :
                 selected.status === "REJECTED" ? "bg-red-500/20 text-red-400 border border-red-500/30" :
                 "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30"
@@ -320,7 +360,7 @@ export default function CommunicationPage() {
               </span>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-[#1a1a1a] to-[#2d2d2d]">
+            <div className="flex-1 overflow-y-auto p-3 md:p-6 space-y-4 bg-gradient-to-b from-[#1a1a1a] to-[#2d2d2d]">
               <AnimatePresence>
                 {messages.map((m, index) => {
                   const mine = m.senderId === session?.user?.id;
@@ -337,17 +377,17 @@ export default function CommunicationPage() {
                     >
                       <motion.div
                         whileHover={{ scale: 1.02 }}
-                        className={`max-w-[70%] border rounded-xl px-4 py-3 shadow-lg ${
+                        className={`max-w-[85%] md:max-w-[70%] border rounded-xl px-3 md:px-4 py-2.5 md:py-3 shadow-lg ${
                           mine
                             ? "bg-gradient-to-br from-[#404040] to-[#6b6b6b] border-[#808080] text-white"
                             : "bg-[#2d2d2d] border-[#404040] text-[#b0b0b0]"
                         }`}
                       >
-                        <div className="text-sm whitespace-pre-wrap">{m.content}</div>
-                        <div className={`text-[10px] text-right mt-2 ${
+                        <div className="text-sm md:text-base whitespace-pre-wrap break-words">{m.content}</div>
+                        <div className={`text-[10px] md:text-xs text-right mt-1.5 md:mt-2 ${
                           mine ? "text-[#b0b0b0]" : "text-[#808080]"
                         }`}>
-                          {new Date(m.createdAt).toLocaleTimeString()}
+                          {new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </div>
                       </motion.div>
                     </motion.div>
@@ -358,24 +398,24 @@ export default function CommunicationPage() {
               <div ref={bottomRef} />
             </div>
 
-            <div className="h-20 bg-gradient-to-r from-[#2d2d2d] to-[#1a1a1a] border-t border-[#333333] px-6 flex items-center gap-3 shadow-lg">
+            <div className="h-auto md:h-20 bg-gradient-to-r from-[#2d2d2d] to-[#1a1a1a] border-t border-[#333333] px-3 md:px-6 py-3 md:py-0 flex items-center gap-2 md:gap-3 shadow-lg">
               <input
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && !e.shiftKey && sendMessage()}
                 disabled={selected.status !== "APPROVED"}
                 placeholder={selected.status === "APPROVED" ? "Type a message..." : "Appointment must be approved to chat"}
-                className="flex-1 bg-[#2d2d2d] border border-[#404040] text-white rounded-full px-5 py-3 text-sm outline-none focus:ring-2 focus:ring-[#808080] focus:border-transparent placeholder-[#6b6b6b] disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-[#2d2d2d] border border-[#404040] text-white rounded-full px-4 md:px-5 py-2.5 md:py-3 text-sm md:text-base outline-none focus:ring-2 focus:ring-[#808080] focus:border-transparent placeholder-[#6b6b6b] disabled:opacity-50 disabled:cursor-not-allowed"
               />
               <motion.button
                 whileHover={{ scale: selected.status === "APPROVED" ? 1.05 : 1 }}
                 whileTap={{ scale: selected.status === "APPROVED" ? 0.95 : 1 }}
                 onClick={sendMessage}
                 disabled={selected.status !== "APPROVED" || !newMessage.trim()}
-                className="bg-gradient-to-r from-[#404040] to-[#6b6b6b] hover:from-[#6b6b6b] hover:to-[#404040] text-white px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 border border-[#333333] hover:border-[#808080] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-gradient-to-r from-[#404040] to-[#6b6b6b] hover:from-[#6b6b6b] hover:to-[#404040] text-white px-4 md:px-6 py-2.5 md:py-3 rounded-full text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 border border-[#333333] hover:border-[#808080] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
               >
                 <Send className="w-4 h-4" />
-                Send
+                <span className="hidden md:inline">Send</span>
               </motion.button>
             </div>
           </>

@@ -13,6 +13,8 @@ import {
   Newspaper,
   MessageSquare,
   GraduationCap,
+  Menu,
+  X,
 } from "lucide-react"
 
 import RequireRole from "./RequireRole"
@@ -46,11 +48,33 @@ const actions = [
 
 export default function TeachersPage() {
   const [active, setActive] = useState(actions[0])
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <div className="flex min-h-screen bg-black m-0 p-0">
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-[#1a1a1a] border border-[#333333] rounded-lg text-white hover:bg-[#2d2d2d] transition"
+      >
+        {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      {/* Overlay for mobile */}
+      {sidebarOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* SIDEBAR */}
-      <aside className="w-64 md:w-72 bg-[#1a1a1a] border-r border-[#333333] shadow-2xl flex-shrink-0">
+      <aside className={`
+        fixed md:static inset-y-0 left-0 z-40
+        w-64 md:w-72 bg-[#1a1a1a] border-r border-[#333333] shadow-2xl flex-shrink-0
+        transform transition-transform duration-300 ease-in-out
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}>
         <div className="p-6 border-b border-[#333333]">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 bg-[#404040] rounded-lg flex items-center justify-center">
@@ -77,7 +101,10 @@ export default function TeachersPage() {
                 key={item.id}
                 whileHover={{ scale: 1.02, x: 4 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setActive(item)}
+                onClick={() => {
+                  setActive(item)
+                  setSidebarOpen(false) // Close sidebar on mobile when item is clicked
+                }}
                 className={`w-full flex items-center gap-3 md:gap-4 px-3 md:px-4 py-2.5 md:py-3 rounded-lg text-left transition
                   ${
                     isActive
@@ -95,7 +122,7 @@ export default function TeachersPage() {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 overflow-hidden bg-black m-0 p-0">
+      <main className="flex-1 overflow-hidden bg-black m-0 p-0 pt-16 md:pt-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={active.id}

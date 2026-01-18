@@ -197,45 +197,45 @@ export default function HostelManagement() {
             </h1>
             <p className="text-[#808080] text-sm md:text-base">Manage hostels, rooms, and bookings</p>
           </div>
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-2 flex-wrap w-full md:w-auto">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setActiveTab("hostels")}
-              className={`px-4 py-2.5 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ${
+              className={`px-3 md:px-4 py-2 md:py-2.5 rounded-lg text-sm md:text-base font-semibold transition-all duration-300 flex items-center gap-2 flex-1 md:flex-none ${
                 activeTab === "hostels"
                   ? "bg-gradient-to-r from-[#404040] to-[#6b6b6b] text-white shadow-lg border border-[#808080]"
                   : "bg-[#2d2d2d] text-[#808080] hover:bg-[#404040] hover:text-white border border-[#333333]"
               }`}
             >
-              <Building2 size={18} />
-              All Hostels
+              <Building2 size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="whitespace-nowrap">All Hostels</span>
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setActiveTab("create")}
-              className={`px-4 py-2.5 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ${
+              className={`px-3 md:px-4 py-2 md:py-2.5 rounded-lg text-sm md:text-base font-semibold transition-all duration-300 flex items-center gap-2 flex-1 md:flex-none ${
                 activeTab === "create"
                   ? "bg-gradient-to-r from-[#404040] to-[#6b6b6b] text-white shadow-lg border border-[#808080]"
                   : "bg-[#2d2d2d] text-[#808080] hover:bg-[#404040] hover:text-white border border-[#333333]"
               }`}
             >
-              <Plus size={18} />
-              Create Hostel
+              <Plus size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="whitespace-nowrap">Create Hostel</span>
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setActiveTab("bookings")}
-              className={`px-4 py-2.5 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ${
+              className={`px-3 md:px-4 py-2 md:py-2.5 rounded-lg text-sm md:text-base font-semibold transition-all duration-300 flex items-center gap-2 flex-1 md:flex-none ${
                 activeTab === "bookings"
                   ? "bg-gradient-to-r from-[#404040] to-[#6b6b6b] text-white shadow-lg border border-[#808080]"
                   : "bg-[#2d2d2d] text-[#808080] hover:bg-[#404040] hover:text-white border border-[#333333]"
               }`}
             >
-              <Users size={18} />
-              All Bookings
+              <Users size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="whitespace-nowrap">All Bookings</span>
             </motion.button>
           </div>
         </motion.div>
@@ -441,67 +441,116 @@ export default function HostelManagement() {
       )}
 
       {activeTab === "hostels" && (
-        <div className="space-y-4">
+        <div className="space-y-6">
           {hostels.length === 0 ? (
-            <div className="bg-white rounded-xl shadow-lg p-12 text-center">
-              <Building2 size={48} className="mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-500 text-lg">No hostels created yet</p>
-              <button
-                onClick={() => setActiveTab("create")}
-                className="mt-4 bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition"
-              >
-                Create First Hostel
-              </button>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="relative overflow-hidden bg-gradient-to-br from-[#1a1a1a] via-[#2d2d2d] to-[#1a1a1a] rounded-2xl shadow-2xl p-12 text-center border border-[#333333]"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-[#404040]/10 via-transparent to-[#404040]/10"></div>
+              <div className="relative">
+                <Building2 size={64} className="mx-auto text-[#808080] mb-4 opacity-50" />
+                <p className="text-[#808080] text-lg mb-6">No hostels created yet</p>
+                <motion.button
+                  onClick={() => setActiveTab("create")}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-[#404040] to-[#6b6b6b] hover:from-[#6b6b6b] hover:to-[#404040] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 border border-[#808080] hover:border-white shadow-lg"
+                >
+                  Create First Hostel
+                </motion.button>
+              </div>
+            </motion.div>
           ) : (
             <div className="space-y-6">
-              {hostels.map((hostel) => (
+              {hostels.map((hostel, hostelIndex) => (
                 <motion.div
                   key={hostel.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white rounded-xl shadow-lg p-6 border border-green-200"
+                  transition={{ delay: hostelIndex * 0.1 }}
+                  className="relative overflow-hidden bg-gradient-to-br from-[#1a1a1a] via-[#2d2d2d] to-[#1a1a1a] rounded-2xl shadow-2xl p-6 md:p-8 border border-[#333333] hover:border-[#404040] transition-all duration-300"
                 >
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="text-2xl font-bold text-green-700">{hostel.name}</h3>
-                      <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
-                        <div className="flex items-center gap-1">
-                          <MapPin size={14} />
-                          <span>{hostel.address}</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#404040]/10 via-transparent to-[#404040]/10"></div>
+                  <div className="relative">
+                    {/* Hostel Header */}
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-6 gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-12 h-12 bg-gradient-to-br from-[#404040] to-[#6b6b6b] rounded-xl flex items-center justify-center border border-[#333333] shadow-lg">
+                            <Building2 className="w-6 h-6 text-white" />
+                          </div>
+                          <div>
+                            <h3 className="text-2xl md:text-3xl font-bold text-white">{hostel.name}</h3>
+                            <div className="flex flex-wrap items-center gap-3 mt-2">
+                              <div className="flex items-center gap-2 text-[#808080] text-sm">
+                                <MapPin size={16} />
+                                <span>{hostel.address}</span>
+                              </div>
+                              <span className="px-3 py-1 bg-[#404040]/50 text-white rounded-full text-xs font-medium border border-[#808080]/30">
+                                {hostel.gender}
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
-                          {hostel.gender}
-                        </span>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-                    {hostel.rooms.map((room) => (
-                      <div key={room.id} className="border rounded-lg p-4 bg-green-50">
-                        <div className="flex justify-between items-start mb-2">
-                          <div>
-                            <p className="font-semibold text-green-700">Room {room.roomNumber}</p>
-                            <p className="text-xs text-gray-600">Floor {room.floor}</p>
-                          </div>
-                          <span className="font-bold text-green-700">₹{room.amount}</span>
-                        </div>
-                        <div className="mt-3">
-                          <p className="text-xs text-gray-600 mb-1">
-                            {room.bookedCotsCount} / {room.cotCount} cots booked
-                          </p>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div
-                              className="bg-green-600 h-2 rounded-full"
-                              style={{
-                                width: `${(room.bookedCotsCount / room.cotCount) * 100}%`,
-                              }}
-                            ></div>
-                          </div>
-                        </div>
+                    {/* Rooms Grid */}
+                    {hostel.rooms.length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+                        {hostel.rooms.map((room, roomIndex) => (
+                          <motion.div
+                            key={room.id}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: hostelIndex * 0.1 + roomIndex * 0.05 }}
+                            className="bg-[#1a1a1a] border border-[#404040] rounded-xl p-4 hover:border-[#808080] transition-all duration-200 hover:bg-[#2d2d2d]"
+                          >
+                            <div className="flex justify-between items-start mb-3">
+                              <div>
+                                <div className="flex items-center gap-2 mb-1">
+                                  <Bed size={16} className="text-[#808080]" />
+                                  <p className="font-semibold text-white">Room {room.roomNumber}</p>
+                                </div>
+                                <p className="text-xs text-[#808080]">Floor {room.floor}</p>
+                              </div>
+                              <span className="font-bold text-green-400 flex items-center gap-1">
+                                <IndianRupee size={14} />
+                                {room.amount}
+                              </span>
+                            </div>
+                            
+                            <div className="mt-4 pt-4 border-t border-[#333333]">
+                              <div className="flex justify-between items-center mb-2">
+                                <p className="text-xs text-[#808080]">
+                                  {room.bookedCotsCount} / {room.cotCount} cots booked
+                                </p>
+                                <span className="text-xs font-medium text-white">
+                                  {room.availableCotsCount} available
+                                </span>
+                              </div>
+                              <div className="w-full bg-[#2d2d2d] rounded-full h-2.5 overflow-hidden">
+                                <motion.div
+                                  initial={{ width: 0 }}
+                                  animate={{ 
+                                    width: `${Math.min((room.bookedCotsCount / room.cotCount) * 100, 100)}%` 
+                                  }}
+                                  transition={{ duration: 0.5, delay: hostelIndex * 0.1 + roomIndex * 0.05 }}
+                                  className="bg-gradient-to-r from-green-500 to-green-600 h-2.5 rounded-full"
+                                ></motion.div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
                       </div>
-                    ))}
+                    ) : (
+                      <div className="bg-[#2d2d2d]/50 border border-[#404040] rounded-xl p-6 text-center mt-6">
+                        <Bed size={32} className="mx-auto text-[#808080] mb-2 opacity-50" />
+                        <p className="text-[#808080] text-sm">No rooms available in this hostel</p>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               ))}
@@ -514,12 +563,12 @@ export default function HostelManagement() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden bg-gradient-to-br from-[#1a1a1a] via-[#2d2d2d] to-[#1a1a1a] rounded-2xl shadow-2xl p-6 md:p-8 border border-[#333333] hover:border-[#404040] transition-all duration-300"
+          className="relative overflow-hidden bg-gradient-to-br from-[#1a1a1a] via-[#2d2d2d] to-[#1a1a1a] rounded-2xl shadow-2xl p-4 md:p-6 lg:p-8 border border-[#333333] hover:border-[#404040] transition-all duration-300"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-[#404040]/10 via-transparent to-[#404040]/10"></div>
           <div className="relative">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white flex items-center gap-3">
-              <Users className="w-7 h-7 text-[#808080]" />
+              <Users className="w-6 h-6 md:w-7 md:h-7 text-[#808080]" />
               All Student Bookings
             </h2>
             {bookings.length === 0 ? (
@@ -528,50 +577,30 @@ export default function HostelManagement() {
                 <p className="text-[#808080] text-lg">No bookings yet</p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
-                  <thead className="bg-[#2d2d2d] border-b border-[#333333]">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-white font-semibold">Student Name</th>
-                      <th className="px-4 py-3 text-left text-white font-semibold">Class</th>
-                      <th className="px-4 py-3 text-left text-white font-semibold">Hostel</th>
-                      <th className="px-4 py-3 text-left text-white font-semibold">Room</th>
-                      <th className="px-4 py-3 text-left text-white font-semibold">Cot</th>
-                      <th className="px-4 py-3 text-left text-white font-semibold">Amount</th>
-                      <th className="px-4 py-3 text-left text-white font-semibold">Payment</th>
-                      <th className="px-4 py-3 text-left text-white font-semibold">Booked On</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#333333]">
-                    {bookings.map((booking, index) => (
-                      <motion.tr
-                        key={booking.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                        whileHover={{ backgroundColor: "#2d2d2d" }}
-                        className="hover:bg-[#2d2d2d]/50 transition"
-                      >
-                        <td className="px-4 py-3 font-medium text-white">
-                          {booking.student.user.name || "N/A"}
-                        </td>
-                        <td className="px-4 py-3 text-[#808080]">
-                          {booking.student.class
-                            ? `${booking.student.class.name}${booking.student.class.section ? ` - ${booking.student.class.section}` : ""}`
-                            : "N/A"}
-                        </td>
-                        <td className="px-4 py-3 font-medium text-white">
-                          {booking.room.hostel.name}
-                        </td>
-                        <td className="px-4 py-3 text-white">Room {booking.room.roomNumber}</td>
-                        <td className="px-4 py-3">
-                          <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded text-sm font-medium border border-green-500/30">
-                            Cot {booking.cotNumber}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 font-semibold text-green-400">₹{booking.amount}</td>
-                        <td className="px-4 py-3">
-                          <span className={`px-2 py-1 rounded text-xs font-medium border ${
+              <>
+                {/* Mobile Card View */}
+                <div className="md:hidden space-y-4">
+                  {bookings.map((booking, index) => (
+                    <motion.div
+                      key={booking.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="bg-[#2d2d2d]/50 border border-[#404040] rounded-xl p-4 hover:border-[#808080] transition-all"
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h3 className="font-semibold text-white text-lg">
+                              {booking.student.user.name || "N/A"}
+                            </h3>
+                            <p className="text-sm text-[#808080] mt-1">
+                              {booking.student.class
+                                ? `${booking.student.class.name}${booking.student.class.section ? ` - ${booking.student.class.section}` : ""}`
+                                : "N/A"}
+                            </p>
+                          </div>
+                          <span className={`px-2.5 py-1 rounded-full text-xs font-medium border shrink-0 ${
                             booking.paymentStatus === "PAID" 
                               ? "bg-green-500/20 text-green-400 border-green-500/30" 
                               : booking.paymentStatus === "FAILED"
@@ -580,15 +609,107 @@ export default function HostelManagement() {
                           }`}>
                             {booking.paymentStatus}
                           </span>
-                        </td>
-                        <td className="px-4 py-3 text-sm text-[#808080]">
-                          {new Date(booking.createdAt).toLocaleDateString()}
-                        </td>
-                      </motion.tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3 pt-2 border-t border-[#333333]">
+                          <div>
+                            <p className="text-xs text-[#808080] mb-1">Hostel</p>
+                            <p className="text-sm font-medium text-white">{booking.room.hostel.name}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-[#808080] mb-1">Room & Cot</p>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm text-white">Room {booking.room.roomNumber}</span>
+                              <span className="px-2 py-0.5 bg-green-500/20 text-green-400 rounded text-xs font-medium border border-green-500/30">
+                                Cot {booking.cotNumber}
+                              </span>
+                            </div>
+                          </div>
+                          <div>
+                            <p className="text-xs text-[#808080] mb-1">Amount</p>
+                            <p className="text-sm font-semibold text-green-400 flex items-center gap-1">
+                              <IndianRupee size={14} />
+                              {booking.amount}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-[#808080] mb-1">Booked On</p>
+                            <p className="text-sm text-white">
+                              {new Date(booking.createdAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Desktop Table View */}
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="w-full border-collapse">
+                    <thead className="bg-[#2d2d2d] border-b border-[#333333]">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-white font-semibold text-sm">Student Name</th>
+                        <th className="px-4 py-3 text-left text-white font-semibold text-sm">Class</th>
+                        <th className="px-4 py-3 text-left text-white font-semibold text-sm">Hostel</th>
+                        <th className="px-4 py-3 text-left text-white font-semibold text-sm">Room</th>
+                        <th className="px-4 py-3 text-left text-white font-semibold text-sm">Cot</th>
+                        <th className="px-4 py-3 text-left text-white font-semibold text-sm">Amount</th>
+                        <th className="px-4 py-3 text-left text-white font-semibold text-sm">Payment</th>
+                        <th className="px-4 py-3 text-left text-white font-semibold text-sm">Booked On</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#333333]">
+                      {bookings.map((booking, index) => (
+                        <motion.tr
+                          key={booking.id}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                          whileHover={{ backgroundColor: "#2d2d2d" }}
+                          className="hover:bg-[#2d2d2d]/50 transition"
+                        >
+                          <td className="px-4 py-3 font-medium text-white">
+                            {booking.student.user.name || "N/A"}
+                          </td>
+                          <td className="px-4 py-3 text-[#808080]">
+                            {booking.student.class
+                              ? `${booking.student.class.name}${booking.student.class.section ? ` - ${booking.student.class.section}` : ""}`
+                              : "N/A"}
+                          </td>
+                          <td className="px-4 py-3 font-medium text-white">
+                            {booking.room.hostel.name}
+                          </td>
+                          <td className="px-4 py-3 text-white">Room {booking.room.roomNumber}</td>
+                          <td className="px-4 py-3">
+                            <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded text-sm font-medium border border-green-500/30">
+                              Cot {booking.cotNumber}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 font-semibold text-green-400 flex items-center gap-1">
+                            <IndianRupee size={14} />
+                            {booking.amount}
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className={`px-2 py-1 rounded text-xs font-medium border ${
+                              booking.paymentStatus === "PAID" 
+                                ? "bg-green-500/20 text-green-400 border-green-500/30" 
+                                : booking.paymentStatus === "FAILED"
+                                ? "bg-red-500/20 text-red-400 border-red-500/30"
+                                : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+                            }`}>
+                              {booking.paymentStatus}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-sm text-[#808080]">
+                            {new Date(booking.createdAt).toLocaleDateString()}
+                          </td>
+                        </motion.tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
           </div>
         </motion.div>

@@ -214,45 +214,45 @@ export default function BusManagement() {
             </h1>
             <p className="text-[#808080] text-sm md:text-base">Manage buses, routes, and bookings</p>
           </div>
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-2 flex-wrap w-full md:w-auto">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setActiveTab("buses")}
-              className={`px-4 py-2.5 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ${
+              className={`px-3 md:px-4 py-2 md:py-2.5 rounded-lg text-sm md:text-base font-semibold transition-all duration-300 flex items-center gap-2 flex-1 md:flex-none ${
                 activeTab === "buses"
                   ? "bg-gradient-to-r from-[#404040] to-[#6b6b6b] text-white shadow-lg border border-[#808080]"
                   : "bg-[#2d2d2d] text-[#808080] hover:bg-[#404040] hover:text-white border border-[#333333]"
               }`}
             >
-              <Bus size={18} />
-              All Buses
+              <Bus size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="whitespace-nowrap">All Buses</span>
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setActiveTab("create")}
-              className={`px-4 py-2.5 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ${
+              className={`px-3 md:px-4 py-2 md:py-2.5 rounded-lg text-sm md:text-base font-semibold transition-all duration-300 flex items-center gap-2 flex-1 md:flex-none ${
                 activeTab === "create"
                   ? "bg-gradient-to-r from-[#404040] to-[#6b6b6b] text-white shadow-lg border border-[#808080]"
                   : "bg-[#2d2d2d] text-[#808080] hover:bg-[#404040] hover:text-white border border-[#333333]"
               }`}
             >
-              <Plus size={18} />
-              Create Bus
+              <Plus size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="whitespace-nowrap">Create Bus</span>
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setActiveTab("bookings")}
-              className={`px-4 py-2.5 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ${
+              className={`px-3 md:px-4 py-2 md:py-2.5 rounded-lg text-sm md:text-base font-semibold transition-all duration-300 flex items-center gap-2 flex-1 md:flex-none ${
                 activeTab === "bookings"
                   ? "bg-gradient-to-r from-[#404040] to-[#6b6b6b] text-white shadow-lg border border-[#808080]"
                   : "bg-[#2d2d2d] text-[#808080] hover:bg-[#404040] hover:text-white border border-[#333333]"
               }`}
             >
-              <Users size={18} />
-              All Bookings
+              <Users size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="whitespace-nowrap">All Bookings</span>
             </motion.button>
           </div>
         </motion.div>
@@ -583,107 +583,189 @@ export default function BusManagement() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#1a1a1a] border border-[#333333] rounded-xl shadow-lg p-6 hover:border-[#404040] transition"
+          className="relative overflow-hidden bg-gradient-to-br from-[#1a1a1a] via-[#2d2d2d] to-[#1a1a1a] rounded-2xl shadow-2xl p-4 md:p-6 lg:p-8 border border-[#333333] hover:border-[#404040] transition-all duration-300"
         >
-          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-            <Users className="w-7 h-7 text-[#808080]" />
-            All Student Bookings
-          </h2>
-          {bookings.length === 0 ? (
-            <div className="text-center py-12">
-              <Users size={48} className="mx-auto text-[#808080] mb-4 opacity-50" />
-              <p className="text-[#808080] text-lg">No bookings yet</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-[#2d2d2d] border-b border-[#333333]">
-                  <tr>
-                    <th className="px-4 py-4 text-left text-sm font-medium text-white">
-                      <div className="flex items-center gap-2">
-                        <Users size={16} />
-                        Student Name
-                      </div>
-                    </th>
-                    <th className="px-4 py-4 text-left text-sm font-medium text-white">Class</th>
-                    <th className="px-4 py-4 text-left text-sm font-medium text-white">
-                      <div className="flex items-center gap-2">
-                        <Bus size={16} />
-                        Bus Number
-                      </div>
-                    </th>
-                    <th className="px-4 py-4 text-left text-sm font-medium text-white">Seat</th>
-                    <th className="px-4 py-4 text-left text-sm font-medium text-white">
-                      <div className="flex items-center gap-2">
-                        <MapPin size={16} />
-                        Location
-                      </div>
-                    </th>
-                    <th className="px-4 py-4 text-left text-sm font-medium text-white">
-                      <div className="flex items-center gap-2">
-                        <IndianRupee size={16} />
-                        Amount
-                      </div>
-                    </th>
-                    <th className="px-4 py-4 text-left text-sm font-medium text-white">Payment</th>
-                    <th className="px-4 py-4 text-left text-sm font-medium text-white">
-                      <div className="flex items-center gap-2">
-                        <Clock size={16} />
-                        Booked On
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#333333]">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#404040]/10 via-transparent to-[#404040]/10"></div>
+          <div className="relative">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white flex items-center gap-3">
+              <Users className="w-6 h-6 md:w-7 md:h-7 text-[#808080]" />
+              All Student Bookings
+            </h2>
+            {bookings.length === 0 ? (
+              <div className="text-center py-12">
+                <Users size={48} className="mx-auto text-[#808080] mb-4 opacity-50" />
+                <p className="text-[#808080] text-lg">No bookings yet</p>
+              </div>
+            ) : (
+              <>
+                {/* Mobile Card View */}
+                <div className="md:hidden space-y-4">
                   {bookings.map((booking, index) => (
-                    <motion.tr
+                    <motion.div
                       key={booking.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      className="hover:bg-[#2d2d2d] transition"
+                      className="bg-[#2d2d2d]/50 border border-[#404040] rounded-xl p-4 hover:border-[#808080] transition-all"
                     >
-                      <td className="px-4 py-4 font-medium text-white">
-                        {booking.student.user.name || "N/A"}
-                      </td>
-                      <td className="px-4 py-4 text-[#808080]">
-                        {booking.student.class
-                          ? `${booking.student.class.name}${booking.student.class.section ? ` - ${booking.student.class.section}` : ""}`
-                          : "N/A"}
-                      </td>
-                      <td className="px-4 py-4 font-medium text-white">
-                        {booking.bus.busNumber}
-                      </td>
-                      <td className="px-4 py-4">
-                        <span className="inline-flex items-center px-3 py-1 bg-green-500/20 text-green-400 border border-green-500/30 rounded-full text-sm font-medium">
-                          Seat {booking.seatNumber}
-                        </span>
-                      </td>
-                      <td className="px-4 py-4 text-[#808080]">{booking.route?.location || "N/A"}</td>
-                      <td className="px-4 py-4 font-semibold text-green-400 flex items-center gap-1">
-                        <IndianRupee size={16} />
-                        {booking.amount}
-                      </td>
-                      <td className="px-4 py-4">
-                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${
-                          booking.paymentStatus === "PAID" 
-                            ? "bg-green-500/20 text-green-400 border-green-500/30" 
-                            : booking.paymentStatus === "FAILED"
-                            ? "bg-red-500/20 text-red-400 border-red-500/30"
-                            : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
-                        }`}>
-                          {booking.paymentStatus}
-                        </span>
-                      </td>
-                      <td className="px-4 py-4 text-sm text-[#808080]">
-                        {new Date(booking.createdAt).toLocaleDateString()}
-                      </td>
-                    </motion.tr>
+                      <div className="space-y-3">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h3 className="font-semibold text-white text-lg">
+                              {booking.student.user.name || "N/A"}
+                            </h3>
+                            <p className="text-sm text-[#808080] mt-1">
+                              {booking.student.class
+                                ? `${booking.student.class.name}${booking.student.class.section ? ` - ${booking.student.class.section}` : ""}`
+                                : "N/A"}
+                            </p>
+                          </div>
+                          <span className={`px-2.5 py-1 rounded-full text-xs font-medium border shrink-0 ${
+                            booking.paymentStatus === "PAID" 
+                              ? "bg-green-500/20 text-green-400 border-green-500/30" 
+                              : booking.paymentStatus === "FAILED"
+                              ? "bg-red-500/20 text-red-400 border-red-500/30"
+                              : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+                          }`}>
+                            {booking.paymentStatus}
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3 pt-2 border-t border-[#333333]">
+                          <div>
+                            <p className="text-xs text-[#808080] mb-1 flex items-center gap-1">
+                              <Bus size={12} />
+                              Bus
+                            </p>
+                            <p className="text-sm font-medium text-white">{booking.bus.busNumber}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-[#808080] mb-1">Seat</p>
+                            <span className="inline-flex items-center px-2 py-1 bg-green-500/20 text-green-400 border border-green-500/30 rounded-full text-xs font-medium">
+                              Seat {booking.seatNumber}
+                            </span>
+                          </div>
+                          <div>
+                            <p className="text-xs text-[#808080] mb-1 flex items-center gap-1">
+                              <MapPin size={12} />
+                              Location
+                            </p>
+                            <p className="text-sm text-white">{booking.route?.location || "N/A"}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-[#808080] mb-1">Amount</p>
+                            <p className="text-sm font-semibold text-green-400 flex items-center gap-1">
+                              <IndianRupee size={14} />
+                              {booking.amount}
+                            </p>
+                          </div>
+                          <div className="col-span-2">
+                            <p className="text-xs text-[#808080] mb-1 flex items-center gap-1">
+                              <Clock size={12} />
+                              Booked On
+                            </p>
+                            <p className="text-sm text-white">
+                              {new Date(booking.createdAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
                   ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                </div>
+
+                {/* Desktop Table View */}
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-[#2d2d2d] border-b border-[#333333]">
+                      <tr>
+                        <th className="px-4 py-4 text-left text-sm font-medium text-white">
+                          <div className="flex items-center gap-2">
+                            <Users size={16} />
+                            Student Name
+                          </div>
+                        </th>
+                        <th className="px-4 py-4 text-left text-sm font-medium text-white">Class</th>
+                        <th className="px-4 py-4 text-left text-sm font-medium text-white">
+                          <div className="flex items-center gap-2">
+                            <Bus size={16} />
+                            Bus Number
+                          </div>
+                        </th>
+                        <th className="px-4 py-4 text-left text-sm font-medium text-white">Seat</th>
+                        <th className="px-4 py-4 text-left text-sm font-medium text-white">
+                          <div className="flex items-center gap-2">
+                            <MapPin size={16} />
+                            Location
+                          </div>
+                        </th>
+                        <th className="px-4 py-4 text-left text-sm font-medium text-white">
+                          <div className="flex items-center gap-2">
+                            <IndianRupee size={16} />
+                            Amount
+                          </div>
+                        </th>
+                        <th className="px-4 py-4 text-left text-sm font-medium text-white">Payment</th>
+                        <th className="px-4 py-4 text-left text-sm font-medium text-white">
+                          <div className="flex items-center gap-2">
+                            <Clock size={16} />
+                            Booked On
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#333333]">
+                      {bookings.map((booking, index) => (
+                        <motion.tr
+                          key={booking.id}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                          className="hover:bg-[#2d2d2d] transition"
+                        >
+                          <td className="px-4 py-4 font-medium text-white">
+                            {booking.student.user.name || "N/A"}
+                          </td>
+                          <td className="px-4 py-4 text-[#808080]">
+                            {booking.student.class
+                              ? `${booking.student.class.name}${booking.student.class.section ? ` - ${booking.student.class.section}` : ""}`
+                              : "N/A"}
+                          </td>
+                          <td className="px-4 py-4 font-medium text-white">
+                            {booking.bus.busNumber}
+                          </td>
+                          <td className="px-4 py-4">
+                            <span className="inline-flex items-center px-3 py-1 bg-green-500/20 text-green-400 border border-green-500/30 rounded-full text-sm font-medium">
+                              Seat {booking.seatNumber}
+                            </span>
+                          </td>
+                          <td className="px-4 py-4 text-[#808080]">{booking.route?.location || "N/A"}</td>
+                          <td className="px-4 py-4 font-semibold text-green-400 flex items-center gap-1">
+                            <IndianRupee size={16} />
+                            {booking.amount}
+                          </td>
+                          <td className="px-4 py-4">
+                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${
+                              booking.paymentStatus === "PAID" 
+                                ? "bg-green-500/20 text-green-400 border-green-500/30" 
+                                : booking.paymentStatus === "FAILED"
+                                ? "bg-red-500/20 text-red-400 border-red-500/30"
+                                : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+                            }`}>
+                              {booking.paymentStatus}
+                            </span>
+                          </td>
+                          <td className="px-4 py-4 text-sm text-[#808080]">
+                            {new Date(booking.createdAt).toLocaleDateString()}
+                          </td>
+                        </motion.tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
+          </div>
         </motion.div>
       )}
       </div>

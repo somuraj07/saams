@@ -4,11 +4,12 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
-import { Newspaper, BookOpen, Award, CreditCard, MessageCircle, FileText, Calendar, User, CheckCircle2, XCircle, Clock, Send, ExternalLink, Download } from "lucide-react";
+import { Newspaper, BookOpen, Award, CreditCard, MessageCircle, FileText, Calendar, User, CheckCircle2, XCircle, Clock, Send, ExternalLink, Download, LayoutDashboard, ClipboardList, Megaphone, Bus, Building2, BarChart3 } from "lucide-react";
 import PayButton from "./PayButton";
 import BusBooking from "./BusBooking";
 import HostelBooking from "./HostelBooking";
 import TimetableView from "./TimetableView";
+import CommunicationPage from "@/app/communication/page";
 
 interface Mark {
   id: string;
@@ -441,33 +442,36 @@ export default function StudentDashboardPage() {
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
         <div className="flex gap-2 bg-[#1a1a1a] border border-[#333333] rounded-lg p-1 shadow-lg overflow-x-auto scrollbar-hide">
           {[
-            { id: "overview", label: "Overview", icon: "📊" },
-            { id: "newsfeed", label: "News Feed", icon: "📰" },
-            { id: "homework", label: "Homework", icon: "📚" },
-            { id: "marks", label: "Marks", icon: "📝" },
-            { id: "attendance", label: "Attendance", icon: "✅" },
-            { id: "events", label: "Events", icon: "🎉" },
-            { id: "certificates", label: "Certificates", icon: "🏆" },
-            { id: "tc", label: "TC", icon: "📄" },
-            { id: "payments", label: "Payments", icon: "💳" },
-            { id: "communication", label: "Communication", icon: "💬" },
-            { id: "bus", label: "Bus Booking", icon: "🚌" },
-            { id: "hostel", label: "Hostel Booking", icon: "🏠" },
-            { id: "timetable", label: "Timetable", icon: "📅" },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex-shrink-0 px-3 md:px-4 py-2 md:py-3 rounded-lg font-medium transition-all whitespace-nowrap ${
-                activeTab === tab.id
-                  ? "bg-[#404040] text-white shadow-md"
-                  : "text-[#808080] hover:bg-[#2d2d2d] hover:text-white"
-              }`}
-            >
-              <span className="mr-1 md:mr-2">{tab.icon}</span>
-              <span className="hidden sm:inline">{tab.label}</span>
-            </button>
-          ))}
+            { id: "overview", label: "Overview", icon: LayoutDashboard },
+            { id: "newsfeed", label: "News Feed", icon: Newspaper },
+            { id: "homework", label: "Homework", icon: BookOpen },
+            { id: "marks", label: "Marks", icon: ClipboardList },
+            { id: "attendance", label: "Attendance", icon: CheckCircle2 },
+            { id: "events", label: "Events", icon: Megaphone },
+            { id: "certificates", label: "Certificates", icon: Award },
+            { id: "tc", label: "TC", icon: FileText },
+            { id: "payments", label: "Payments", icon: CreditCard },
+            { id: "communication", label: "Communication", icon: MessageCircle },
+            { id: "bus", label: "Bus Booking", icon: Bus },
+            { id: "hostel", label: "Hostel Booking", icon: Building2 },
+            { id: "timetable", label: "Timetable", icon: Calendar },
+          ].map((tab) => {
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex-shrink-0 px-3 md:px-4 py-2 md:py-3 rounded-lg font-medium transition-all whitespace-nowrap flex items-center gap-1.5 md:gap-2 ${
+                  activeTab === tab.id
+                    ? "bg-[#404040] text-white shadow-md"
+                    : "text-[#808080] hover:bg-[#2d2d2d] hover:text-white"
+                }`}
+              >
+                <Icon size={18} className="flex-shrink-0" />
+                <span className="hidden sm:inline">{tab.label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -490,7 +494,7 @@ export default function StudentDashboardPage() {
                     </p>
                   </div>
                   <div className="bg-[#2d2d2d] rounded-full p-4">
-                    <span className="text-3xl">✅</span>
+                    <CheckCircle2 className="w-8 h-8 text-green-400" />
                   </div>
                 </div>
               </div>
@@ -508,7 +512,7 @@ export default function StudentDashboardPage() {
                     </p>
                   </div>
                   <div className="bg-[#2d2d2d] rounded-full p-4">
-                    <span className="text-3xl">📝</span>
+                    <ClipboardList className="w-8 h-8 text-blue-400" />
                   </div>
                 </div>
               </div>
@@ -526,7 +530,7 @@ export default function StudentDashboardPage() {
                     </p>
                   </div>
                   <div className="bg-[#2d2d2d] rounded-full p-4">
-                    <span className="text-3xl">🎉</span>
+                    <Megaphone className="w-8 h-8 text-purple-400" />
                   </div>
                 </div>
               </div>
@@ -544,7 +548,7 @@ export default function StudentDashboardPage() {
                     </p>
                   </div>
                   <div className="bg-[#2d2d2d] rounded-full p-4">
-                    <span className="text-3xl">📚</span>
+                    <BookOpen className="w-8 h-8 text-orange-400" />
                   </div>
                 </div>
               </div>
@@ -577,7 +581,10 @@ export default function StudentDashboardPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-[#404040]/10 via-transparent to-[#404040]/10"></div>
               <div className="relative">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold text-white flex items-center gap-2">📝 Recent Marks</h2>
+                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                    <ClipboardList className="w-5 h-5 text-blue-400" />
+                    Recent Marks
+                  </h2>
                   <motion.button
                     onClick={() => setActiveTab("marks")}
                     whileHover={{ scale: 1.05 }}
@@ -732,7 +739,10 @@ export default function StudentDashboardPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-[#404040]/10 via-transparent to-[#404040]/10"></div>
               <div className="relative">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold text-white flex items-center gap-2">📚 Pending Homework</h2>
+                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-orange-400" />
+                    Pending Homework
+                  </h2>
                   <motion.button
                     onClick={() => setActiveTab("homework")}
                     whileHover={{ scale: 1.05 }}
@@ -844,7 +854,10 @@ export default function StudentDashboardPage() {
           >
             <div className="absolute inset-0 bg-gradient-to-r from-[#404040]/10 via-transparent to-[#404040]/10"></div>
             <div className="relative">
-              <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">📝 My Marks Report</h2>
+              <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                <ClipboardList className="w-6 h-6 text-blue-400" />
+                My Marks Report
+              </h2>
               {marks.length === 0 ? (
                 <p className="text-[#808080] text-center py-12">No marks available yet</p>
               ) : (
@@ -1503,88 +1516,9 @@ export default function StudentDashboardPage() {
 
         {/* Communication Tab */}
         {activeTab === "communication" && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="relative overflow-hidden bg-gradient-to-br from-[#1a1a1a] via-[#2d2d2d] to-[#1a1a1a] rounded-2xl shadow-2xl p-6 border border-[#333333] space-y-6"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-[#404040]/10 via-transparent to-[#404040]/10"></div>
-            <div className="relative">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <MessageCircle className="w-8 h-8 text-[#808080]" />
-                  <div>
-                    <h2 className="text-3xl font-bold text-white">Teacher Communication</h2>
-                    <p className="text-[#808080] text-sm">
-                      View your appointment requests and jump into chat
-                    </p>
-                  </div>
-                </div>
-                <Link
-                  href="/communication"
-                  className="text-[#808080] hover:text-white text-sm font-medium flex items-center gap-1 transition"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  Open chat
-                </Link>
-              </div>
-
-              {appointments.length === 0 ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center text-[#808080] py-12"
-                >
-                  <MessageCircle className="w-16 h-16 text-[#6b6b6b] mx-auto mb-4" />
-                  <p>No appointments yet. Contact your teacher from the chat page.</p>
-                </motion.div>
-              ) : (
-                <div className="space-y-3">
-                  {appointments.map((appt, index) => (
-                    <motion.div
-                      key={appt.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.02, x: 4 }}
-                      className="p-4 rounded-xl border border-[#404040] bg-[#2d2d2d]/50 hover:bg-[#404040]/50 flex items-center justify-between transition"
-                    >
-                      <div className="flex-1">
-                        <p className="font-semibold text-white flex items-center gap-2 mb-1">
-                          <MessageCircle className="w-4 h-4 text-[#808080]" />
-                          Appointment #{appt.id.slice(0, 6)}
-                        </p>
-                        <p className="text-xs text-[#808080] flex items-center gap-1 mb-2">
-                          <Calendar className="w-3 h-3" />
-                          Requested:{" "}
-                          {appt.requestedAt
-                            ? new Date(appt.requestedAt).toLocaleString()
-                            : "Not set"}
-                        </p>
-                        {appt.note && (
-                          <p className="text-sm text-[#b0b0b0] mt-1 line-clamp-2">{appt.note}</p>
-                        )}
-                      </div>
-                      <span
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1 ${
-                          appt.status === "APPROVED"
-                            ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                            : appt.status === "REJECTED"
-                            ? "bg-red-500/20 text-red-400 border border-red-500/30"
-                            : "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30"
-                        }`}
-                      >
-                        {appt.status === "APPROVED" && <CheckCircle2 className="w-3 h-3" />}
-                        {appt.status === "REJECTED" && <XCircle className="w-3 h-3" />}
-                        {appt.status === "PENDING" && <Clock className="w-3 h-3" />}
-                        {appt.status}
-                      </span>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </motion.div>
+          <div className="relative -mx-4 md:-mx-6 -mb-8 h-[calc(100vh-280px)] md:h-[calc(100vh-220px)] min-h-[600px]">
+            <CommunicationPage />
+          </div>
         )}
 
         {/* Bus Booking Tab */}
