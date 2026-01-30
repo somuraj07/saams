@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const { issueId } = await req.jsgiton();
+  const { issueId } = await req.json();
 
   const issue = await prisma.libraryIssue.findUnique({
     where: { id: issueId },
